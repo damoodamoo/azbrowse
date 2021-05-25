@@ -3,6 +3,7 @@ package views
 import (
 	"context"
 	"fmt"
+	"math"
 	"sort"
 	"strings"
 	"sync"
@@ -173,7 +174,9 @@ func (w *ListWidget) Layout(g *gocui.Gui) error {
 		if linesPerItem == 0 {
 			linesPerItem = 1
 		}
-		maxItemsCanShow := (height / linesPerItem) - 1 // minus 1 to be on the safe side
+
+		safetyBuffer := math.Round(float64(height/linesPerItem) * 0.25)
+		maxItemsCanShow := (height / linesPerItem) - int(safetyBuffer) // minus 1 to be on the safe side
 
 		topIndex := w.lastTopIndex
 		bottomIndex := w.lastTopIndex + maxItemsCanShow
